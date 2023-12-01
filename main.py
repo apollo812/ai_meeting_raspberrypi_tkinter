@@ -9,7 +9,7 @@ class GradientFrame(Canvas):
         self._color2 = color2
         self.bind("<Configure>", self._draw_gradient)
         self.bind("<Map>", self._draw_gradient)  # Handle window mapping events
-
+ 
     def _draw_gradient(self, event=None):
         '''Draw the gradient'''
         self.delete("gradient")
@@ -28,7 +28,7 @@ class GradientFrame(Canvas):
             nb = int(b1 + (b_ratio * i))
             color = "#%4.4x%4.4x%4.4x" % (nr,ng,nb)
             self.create_line(i,0,i,height, tags=("gradient",), fill=color)
-        self.lower("gradient")
+        # self.lower("gradient")
 
 if __name__ == "__main__":
     # create root window
@@ -42,13 +42,14 @@ if __name__ == "__main__":
 
     # Create Frame widget
     head_frame = Frame(root, width=586, height=50, bg='#2C2C2C')
-    head_frame.grid(row=1, column=0)
+    head_frame.grid(row=0, column=0, sticky="ew")
 
     
-    main_frame = Frame(root, width=586, height=280)
-    main_frame.grid(row=2, column=0, sticky="nsew")  # Add stickiness
-    grad_main_frame = GradientFrame(main_frame, "#090863", "#1C1AD0", borderwidth=0, relief="flat")
-    grad_main_frame.pack(fill="both", expand=True)
+    main_frame = Frame(root, width=586, height=280, bg='blue')
+    main_frame.grid(row=1, column=0, sticky="nsew")  # Add stickiness
+    # main_frame.pack_propagate(False)  # Avoid automatic resizing of the main_frame
+    # grad_main_frame = GradientFrame(main_frame, "#090863", "#1C1AD0", relief="flat")
+    # grad_main_frame.place(relwidth=1, relheight=1)
 
     # all widgets will be here
     # Execute Tkinter
