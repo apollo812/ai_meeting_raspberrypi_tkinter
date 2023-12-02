@@ -32,6 +32,14 @@ class GradientFrame(Canvas):
             self.create_line(i,0,i,height, tags=("gradient",), fill=color)
         # self.lower("gradient")
 
+def show_content(content_num):
+    if content_num == 1:
+        body_content.config(text="Content 1 displayed")
+    elif content_num == 2:
+        body_content.config(text="Content 2 displayed")
+    elif content_num == 3:
+        body_content.config(text="Content 3 displayed")
+
 if __name__ == "__main__":
     # create root window
     root = Tk()
@@ -68,19 +76,56 @@ if __name__ == "__main__":
     myFont = font.Font(family='OpenSans-Bold', weight="bold", size=15)
     null_image = PhotoImage(width=0, height=0)
 
-    button1 = Button(col_frame_2, font=myFont, text="Meeting", fg="white", compound="center", image=null_image, width=137, height=42, bg=col_frame_2.cget('bg'), relief=FLAT)
+    button1 = Button(
+        col_frame_2, 
+        font=myFont, 
+        text="Meeting", 
+        fg="white", 
+        compound="center", 
+        image=null_image, 
+        width=137, 
+        height=42, 
+        bg=col_frame_2.cget('bg'), 
+        relief=FLAT,
+        command=lambda: show_content(1)
+    )
     button1.grid(row=0, column=0)
     
-    button2 = Button(col_frame_2, font=myFont, text="Saved", fg="white", compound="center", image=null_image, width=137, height=42, bg=col_frame_2.cget('bg'), relief=FLAT)
+    button2 = Button(
+        col_frame_2, 
+        font=myFont, 
+        text="Saved", 
+        fg="white", 
+        compound="center", 
+        image=null_image, 
+        width=137, 
+        height=42, 
+        bg=col_frame_2.cget('bg'), 
+        relief=FLAT,
+        command=lambda: show_content(2)
+    )
     button2.grid(row=0, column=1)
 
-    button3 = Button(col_frame_2, font=myFont, text="Settings", fg="white", compound="center", image=null_image, width=138, height=42, bg=col_frame_2.cget('bg'), relief=FLAT)
+    button3 = Button(
+        col_frame_2, 
+        font=myFont, 
+        text="Settings", 
+        fg="white", 
+        compound="center", 
+        image=null_image, 
+        width=138, 
+        height=42, 
+        bg=col_frame_2.cget('bg'), 
+        relief=FLAT,
+        command=lambda: show_content(3)
+    )
     button3.grid(row=0, column=2)
     
     # Sub-frame with h-60 class
     sub_frame_3 = Frame(main_frame, width=586, height=280, bg='blue')  # Assuming height 180 to mimic h-60
     sub_frame_3.grid(row=1, column=0)
 
+    body_content = Label(sub_frame_3, text="Initial content")
+    body_content.pack(pady=20)
+
     root.mainloop()
-
-
