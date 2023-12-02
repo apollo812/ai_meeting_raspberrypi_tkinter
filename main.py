@@ -2,6 +2,7 @@
 from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
+from tkinter import ttk
 
 class GradientFrame(Canvas):
     '''A gradient frame which uses a canvas to draw the background'''
@@ -243,18 +244,41 @@ if __name__ == "__main__":
 
 
     # Third Tab
-    radio_var = StringVar()
-    radio_var.set("Option 1")
-    radio1_tab3 = Radiobutton(tab_frames[3], text="Option 1", variable=radio_var, value="Option 1")
-    radio1_tab3.pack()
-    radio2_tab3 = Radiobutton(tab_frames[3], text="Option 2", variable=radio_var, value="Option 2")
-    radio2_tab3.pack()
-    radio3_tab3 = Radiobutton(tab_frames[3], text="Option 3", variable=radio_var, value="Option 3")
-    radio3_tab3.pack()
-    label_tab3 = Label(tab_frames[3], text="Selected option: ")
-    label_tab3.pack()
+    tab3_left_frame = Frame(tab_frames[3], width=293, height=280, bg='blue')
+    tab3_left_frame.grid(row=0, column=0, sticky="n")
+
+    tab3_label_left = Label(tab3_left_frame, text="Connect to WIFI", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
+    tab3_label_left.place(relx=0.5, rely=0.2, anchor="center")
+
+    # load play button image
+    wifi_image = ImageTk.PhotoImage(Image.open("wifi.png").resize((340, 200)))
+
+    button = Button(tab3_left_frame, text="Wifi", image=wifi_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
+    button.place(relx=0.5, rely=0.6, anchor="center")
+
+    # Right layout
+    tab3_summery_font = font.Font(family='OpenSans-Bold', weight="bold", size=15)
+    tab3_radio_font = font.Font(family='OpenSans-Bold', weight="bold", size=13)
+
+    tab3_right_frame = Frame(tab_frames[3], width=293, height=280, bg='blue')
+    tab3_right_frame.grid(row=0, column=1, sticky="n")
+
+    tab3_label_right = Label(tab3_right_frame, text="Length of summery", fg="white", font=tab3_summery_font, bg=sub_frame_3.cget('bg'))
+    tab3_label_right.place(relx=0.5, rely=0.2, anchor="center")
+    
+    s = ttk.Style()
+    s.configure('my.TRadiobutton', font=('OpenSans-Bold', 16), foreground='white', background='blue', indicatorsize=40)
+
+    radio_var = IntVar()
+    radio_var.set(1)
+    radio1_tab3 = ttk.Radiobutton(tab3_right_frame, text="Short", variable=radio_var, value=1, width=15, style='my.TRadiobutton')
+    radio1_tab3.place(relx=0.5, rely=0.4, anchor="center")
+    radio2_tab3 = ttk.Radiobutton(tab3_right_frame, text="Medium", variable=radio_var, value=2, width=15, style='my.TRadiobutton')
+    radio2_tab3.place(relx=0.5, rely=0.6, anchor="center")
+    radio3_tab3 = ttk.Radiobutton(tab3_right_frame, text="Long", variable=radio_var, value=3, width=15, style='my.TRadiobutton')
+    radio3_tab3.place(relx=0.5, rely=0.8, anchor="center")
 
     # Show the first tab group contents on startup
-    tab_frames[2].grid(row=1, column=0, sticky="nsew")
+    tab_frames[1].grid(row=1, column=0, sticky="nsew")
 
     root.mainloop()
