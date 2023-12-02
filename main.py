@@ -40,6 +40,24 @@ def show_tab(tab_num):
     # Show the selected tab frame
     tab_frames[tab_num].grid(row=1, column=0, sticky="nsew")
 
+def color_listbox_items(listbox):
+    for index in range(listbox.size()):
+        if index % 2 == 0:
+            listbox.itemconfig(index, {'bg': '#575757'})
+        else:
+            listbox.itemconfig(index, {'bg': '#2C2C2C'})
+
+def on_entry_click(event):
+    if entry.get() == 'Enter your text here...':
+        entry.delete(0, "end")
+        entry.insert(0, '')
+        entry.config(fg = 'black')
+
+def on_focus_out(event):
+    if entry.get() == '':
+        entry.insert(0, 'Enter your text here...')
+        entry.config(fg = 'grey')
+
 if __name__ == "__main__":
     # create root window
     root = Tk()
@@ -63,12 +81,12 @@ if __name__ == "__main__":
 
     # Two col frames of sub frame 2
     # First col frame
-    col_frame_1 = Frame(sub_frame_2, width=150, height=50, bg='#2C2C2C')  
+    col_frame_1 = Frame(sub_frame_2, width=152, height=50, bg='#2C2C2C')  
     col_frame_1.grid(row=0, column=0, padx=(0, 1))
 
     # load logo image
     logo_image = ImageTk.PhotoImage(Image.open("logo.png").resize((100, 30)))
-    Label(col_frame_1, width=145, height=46, image=logo_image, bg='#2C2C2C', highlightbackground='#2C2C2C', highlightcolor='#2C2C2C').pack(fill="both")
+    Label(col_frame_1, width=147, height=46, image=logo_image, bg='#2C2C2C', highlightbackground='#2C2C2C', highlightcolor='#2C2C2C').pack(fill="both")
 
     # Second col frame
     col_frame_2 = Frame(sub_frame_2, width=436, height=50, bg='#2C2C2C')  
@@ -166,12 +184,63 @@ if __name__ == "__main__":
     tab1_label.place(relx=0.5, rely=0.85, anchor="center")
 
     # Second Tab
-    listbox_tab2 = Listbox(tab_frames[2])
-    listbox_tab2.pack(pady=10)
-    entry_tab2 = Entry(tab_frames[2])
-    entry_tab2.pack(pady=10)
-    button_tab2 = Button(tab_frames[2], text="Submit", command=lambda: print(entry_tab2.get()))
-    button_tab2.pack()
+    # Left layout - Listbox
+
+    # Left layout - Label and Listbox
+    listLabelFont = font.Font(family='OpenSans-Bold', weight="bold", size=12)
+
+    tab2_left_frame = Frame(tab_frames[2], width=152, height=280)
+    tab2_left_frame.grid(row=0, column=0, sticky="n")
+
+    tab2_label_left = Label(tab2_left_frame, text="Meetings", font=listLabelFont, bg='#252525', fg='white')
+    tab2_label_left.grid(row=0, column=0, sticky="nswe")
+
+    tab2_listbox = Listbox(tab2_left_frame, width=25, bg='#2C2C2C', fg='white', relief='flat', highlightthickness=0, height=16)
+    tab2_listbox.grid(row=1, column=0, sticky="n")
+
+    # Inserting some items into the listbox
+    items = ["26-11-2023-18:00", "26-11-2023-18:01", "26-11-2023-18:02", "26-11-2023-18:03", "26-11-2023-18:04",
+            "26-11-2023-18:05", "26-11-2023-18:06", "26-11-2023-18:07", "26-11-2023-18:08", "26-11-2023-18:09",
+            "26-11-2023-18:10", "26-11-2023-18:11", "26-11-2023-18:12", "26-11-2023-18:13", "26-11-2023-18:14",
+            "26-11-2023-18:15", "26-11-2023-18:16", "26-11-2023-18:17", "26-11-2023-18:18", "26-11-2023-18:19",
+            "26-11-2023-18:20", "26-11-2023-18:21", "26-11-2023-18:22", "26-11-2023-18:23", "26-11-2023-18:24",
+            "26-11-2023-18:25", "26-11-2023-18:26", "26-11-2023-18:27", "26-11-2023-18:28", "26-11-2023-18:29"
+            ]
+    for item in items:
+        tab2_listbox.insert(END, item)
+
+    # Apply color scheme to listbox items
+    color_listbox_items(tab2_listbox)
+
+    # Right layout - Label, Entry, and Button
+    tab2_right_frame = Frame(tab_frames[2], width=436, height=280, bg="blue")
+    tab2_right_frame.grid(row=0, column=1, sticky="n")
+    
+    tab2_label_right = Label(tab2_right_frame, text="Meeting: 11-10-2023-11:20", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
+    tab2_label_right.place(relx=0.5, rely=0.15, anchor="center")
+
+    tab2_input_frame = Frame(tab2_right_frame, bg=sub_frame_3.cget('bg'))
+    tab2_input_frame.place(relx=0.5, rely=0.45, anchor="center")
+
+    entryLabelFont = font.Font(family='OpenSans-Bold', weight="bold", size=18)
+
+    entry = Entry(tab2_input_frame, text="here", bg='#47535C', fg='#A1A7AA', font=entryLabelFont, width=25)
+    entry.grid(row=0, column=0)
+    entry.insert(0, 'Send summary to email...')
+
+
+    # load play button image
+    send_image = ImageTk.PhotoImage(Image.open("send.png").resize((27, 27)))
+
+    tab1_button_stop = Button(tab2_input_frame, text="Button 2", image=send_image, bg="#36AFC8", relief=FLAT)
+    tab1_button_stop.grid(row=0, column=1)
+
+    # load play button image
+    trash_image = ImageTk.PhotoImage(Image.open("trash.png").resize((50, 60)))
+
+    button = Button(tab2_right_frame, text="Delete", image=trash_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
+    button.place(relx=0.5, rely=0.85, anchor="center")
+
 
     # Third Tab
     radio_var = StringVar()
@@ -186,6 +255,6 @@ if __name__ == "__main__":
     label_tab3.pack()
 
     # Show the first tab group contents on startup
-    tab_frames[1].grid(row=1, column=0, sticky="nsew")
+    tab_frames[2].grid(row=1, column=0, sticky="nsew")
 
     root.mainloop()
