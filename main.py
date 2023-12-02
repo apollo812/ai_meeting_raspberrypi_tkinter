@@ -32,13 +32,13 @@ class GradientFrame(Canvas):
             self.create_line(i,0,i,height, tags=("gradient",), fill=color)
         # self.lower("gradient")
 
-def show_content(content_num):
-    if content_num == 1:
-        body_content.config(text="Content 1 displayed")
-    elif content_num == 2:
-        body_content.config(text="Content 2 displayed")
-    elif content_num == 3:
-        body_content.config(text="Content 3 displayed")
+def show_tab(tab_num):
+    # Hide all tab frames
+    for frame in tab_frames.values():
+        frame.grid_forget()
+    
+    # Show the selected tab frame
+    tab_frames[tab_num].grid(row=1, column=0, sticky="nsew")
 
 if __name__ == "__main__":
     # create root window
@@ -49,36 +49,41 @@ if __name__ == "__main__":
     # root.overrideredirect(True)
     root.resizable(width=False, height=False)
 
-    # Main frame with grid-row class
+    # Main frame
     main_frame = Frame(root)
     main_frame.grid(row=0, column=0)
 
-    # Sub-frame with h-15 class
+    # Sub frame 1
     sub_frame_1 = Frame(main_frame, width=586, height=50, bg='#2C2C2C')  # Assuming height 50 to mimic h-15
     sub_frame_1.grid(row=0, column=0)
 
-    # Sub-frame within the h-15 frame with grid-col class
+    # Sub frame 2
     sub_frame_2 = Frame(sub_frame_1)
     sub_frame_2.grid(row=0, column=0)
 
-    # Two sub-frames within the grid-col class
-    col_frame_1 = Frame(sub_frame_2, width=150, height=50, bg='#2C2C2C')  # Assuming width 50 to mimic col-span-1
+    # Two col frames of sub frame 2
+    # First col frame
+    col_frame_1 = Frame(sub_frame_2, width=150, height=50, bg='#2C2C2C')  
     col_frame_1.grid(row=0, column=0, padx=(0, 1))
 
-    # load image to be "edited"
-    image = ImageTk.PhotoImage(Image.open("logo.png").resize((100, 30)))
-    Label(col_frame_1, width=145, height=46, image=image, bg='#2C2C2C', highlightbackground='#2C2C2C', highlightcolor='#2C2C2C').pack(fill="both")
+    # load logo image
+    logo_image = ImageTk.PhotoImage(Image.open("logo.png").resize((100, 30)))
+    Label(col_frame_1, width=145, height=46, image=logo_image, bg='#2C2C2C', highlightbackground='#2C2C2C', highlightcolor='#2C2C2C').pack(fill="both")
 
-    col_frame_2 = Frame(sub_frame_2, width=436, height=50, bg='#2C2C2C')  # Assuming width 150 to mimic col-span-3
+    # Second col frame
+    col_frame_2 = Frame(sub_frame_2, width=436, height=50, bg='#2C2C2C')  
     col_frame_2.grid(row=0, column=1)
 
-    # Create Font object
-    myFont = font.Font(family='OpenSans-Bold', weight="bold", size=15)
+    # Create Font object for menu
+    menuFont = font.Font(family='OpenSans-Bold', weight="bold", size=15)
+    # Create null image for pixel adjustment of button
     null_image = PhotoImage(width=0, height=0)
 
-    button1 = Button(
+    # Menu buttons
+    # Meeting button
+    button_meeting = Button(
         col_frame_2, 
-        font=myFont, 
+        font=menuFont, 
         text="Meeting", 
         fg="white", 
         compound="center", 
@@ -87,13 +92,14 @@ if __name__ == "__main__":
         height=42, 
         bg=col_frame_2.cget('bg'), 
         relief=FLAT,
-        command=lambda: show_content(1)
+        command=lambda: show_tab(1)
     )
-    button1.grid(row=0, column=0)
+    button_meeting.grid(row=0, column=0)
     
-    button2 = Button(
+    # Saved button
+    button_saved = Button(
         col_frame_2, 
-        font=myFont, 
+        font=menuFont, 
         text="Saved", 
         fg="white", 
         compound="center", 
@@ -102,13 +108,14 @@ if __name__ == "__main__":
         height=42, 
         bg=col_frame_2.cget('bg'), 
         relief=FLAT,
-        command=lambda: show_content(2)
+        command=lambda: show_tab(2)
     )
-    button2.grid(row=0, column=1)
+    button_saved.grid(row=0, column=1)
 
-    button3 = Button(
+    # Settings button
+    button_settings = Button(
         col_frame_2, 
-        font=myFont, 
+        font=menuFont, 
         text="Settings", 
         fg="white", 
         compound="center", 
@@ -117,15 +124,68 @@ if __name__ == "__main__":
         height=42, 
         bg=col_frame_2.cget('bg'), 
         relief=FLAT,
-        command=lambda: show_content(3)
+        command=lambda: show_tab(3)
     )
-    button3.grid(row=0, column=2)
+    button_settings.grid(row=0, column=2)
     
-    # Sub-frame with h-60 class
-    sub_frame_3 = Frame(main_frame, width=586, height=280, bg='blue')  # Assuming height 180 to mimic h-60
-    sub_frame_3.grid(row=1, column=0)
+    # Sub frame 3
+    sub_frame_3 = Frame(main_frame, width=586, height=280, bg='blue')  
+    sub_frame_3.grid(row=1, column=0, sticky="nsew")
 
-    body_content = Label(sub_frame_3, text="Initial content")
-    body_content.pack(pady=20)
+    # Create tab frames
+    tab_frames = {}
+    for i in range(1, 4):
+        tab_frames[i] = Frame(sub_frame_3, width=586, height=280, bg='blue')
+
+    # Define the content for each tab frame
+
+    # First Tab - Meeting
+    # Create Font object for menu
+    tab1_title_font = font.Font(family='OpenSans-Bold', weight="bold", size=23)
+    tab1_length_font = font.Font(family='OpenSans-Bold', weight="bold", size=18)
+
+    tab1_label = Label(tab_frames[1], text="Automatic meeting summary", fg="white", font=tab1_title_font, bg=sub_frame_3.cget('bg'))
+    tab1_label.place(relx=0.5, rely=0.15, anchor="center")
+
+    tab1_button_frame = Frame(tab_frames[1], bg=root.cget('bg'))
+    tab1_button_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+    # load record button image
+    record_image = ImageTk.PhotoImage(Image.open("record.png").resize((140, 140)))
+    
+    tab1_button_record = Button(tab1_button_frame, text="Button 1", image=record_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
+    tab1_button_record.grid(row=0, column=0, ipadx=25)
+
+    # load play button image
+    play_image = ImageTk.PhotoImage(Image.open("playbutton.png").resize((140, 140)))
+
+    tab1_button_stop = Button(tab1_button_frame, text="Button 2", image=play_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
+    tab1_button_stop.grid(row=0, column=1, ipadx=25)
+
+    tab1_label = Label(tab_frames[1], text="Length 00:00:00", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
+    tab1_label.place(relx=0.5, rely=0.85, anchor="center")
+
+    # Second Tab
+    listbox_tab2 = Listbox(tab_frames[2])
+    listbox_tab2.pack(pady=10)
+    entry_tab2 = Entry(tab_frames[2])
+    entry_tab2.pack(pady=10)
+    button_tab2 = Button(tab_frames[2], text="Submit", command=lambda: print(entry_tab2.get()))
+    button_tab2.pack()
+
+    # Third Tab
+    radio_var = StringVar()
+    radio_var.set("Option 1")
+    radio1_tab3 = Radiobutton(tab_frames[3], text="Option 1", variable=radio_var, value="Option 1")
+    radio1_tab3.pack()
+    radio2_tab3 = Radiobutton(tab_frames[3], text="Option 2", variable=radio_var, value="Option 2")
+    radio2_tab3.pack()
+    radio3_tab3 = Radiobutton(tab_frames[3], text="Option 3", variable=radio_var, value="Option 3")
+    radio3_tab3.pack()
+    label_tab3 = Label(tab_frames[3], text="Selected option: ")
+    label_tab3.pack()
+
+    # Show the first tab group contents on startup
+    tab_frames[1].grid(row=1, column=0, sticky="nsew")
 
     root.mainloop()
