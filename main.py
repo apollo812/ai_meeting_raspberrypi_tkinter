@@ -1,5 +1,6 @@
 # Import Module
 from tkinter import *
+import tkinter.font as font
 from PIL import Image, ImageTk
 
 class GradientFrame(Canvas):
@@ -63,6 +64,19 @@ if __name__ == "__main__":
     col_frame_2 = Frame(sub_frame_2, width=436, height=50, bg='#2C2C2C')  # Assuming width 150 to mimic col-span-3
     col_frame_2.grid(row=0, column=1)
 
+    # Create Font object
+    myFont = font.Font(family='OpenSans-Bold', weight="bold", size=15)
+    null_image = PhotoImage(width=0, height=0)
+
+    button1 = Button(col_frame_2, font=myFont, text="Meeting", fg="white", compound="center", image=null_image, width=137, height=42, bg=col_frame_2.cget('bg'), relief=FLAT)
+    button1.grid(row=0, column=0)
+    
+    button2 = Button(col_frame_2, font=myFont, text="Saved", fg="white", compound="center", image=null_image, width=137, height=42, bg=col_frame_2.cget('bg'), relief=FLAT)
+    button2.grid(row=0, column=1)
+
+    button3 = Button(col_frame_2, font=myFont, text="Settings", fg="white", compound="center", image=null_image, width=138, height=42, bg=col_frame_2.cget('bg'), relief=FLAT)
+    button3.grid(row=0, column=2)
+    
     # Sub-frame with h-60 class
     sub_frame_3 = Frame(main_frame, width=586, height=280, bg='blue')  # Assuming height 180 to mimic h-60
     sub_frame_3.grid(row=1, column=0)
