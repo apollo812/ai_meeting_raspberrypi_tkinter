@@ -86,7 +86,7 @@ if __name__ == "__main__":
     col_frame_1.grid(row=0, column=0, padx=(0, 1))
 
     # load logo image
-    logo_image = ImageTk.PhotoImage(Image.open("logo.png").resize((100, 30)))
+    logo_image = ImageTk.PhotoImage(Image.open("icon/logo.png").resize((100, 30)))
     Label(col_frame_1, width=147, height=46, image=logo_image, bg='#2C2C2C', highlightbackground='#2C2C2C', highlightcolor='#2C2C2C').pack(fill="both")
 
     # Second col frame
@@ -170,13 +170,13 @@ if __name__ == "__main__":
     tab1_button_frame.place(relx=0.5, rely=0.5, anchor="center")
 
     # load record button image
-    record_image = ImageTk.PhotoImage(Image.open("record.png").resize((140, 140)))
+    record_image = ImageTk.PhotoImage(Image.open("icon/record.png").resize((140, 140)))
     
     tab1_button_record = Button(tab1_button_frame, text="Button 1", image=record_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
     tab1_button_record.grid(row=0, column=0, ipadx=25)
 
     # load play button image
-    play_image = ImageTk.PhotoImage(Image.open("playbutton.png").resize((140, 140)))
+    play_image = ImageTk.PhotoImage(Image.open("icon/playbutton.png").resize((140, 140)))
 
     tab1_button_stop = Button(tab1_button_frame, text="Button 2", image=play_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
     tab1_button_stop.grid(row=0, column=1, ipadx=25)
@@ -231,13 +231,13 @@ if __name__ == "__main__":
 
 
     # load play button image
-    send_image = ImageTk.PhotoImage(Image.open("send.png").resize((27, 27)))
+    send_image = ImageTk.PhotoImage(Image.open("icon/send.png").resize((27, 27)))
 
     tab1_button_stop = Button(tab2_input_frame, text="Button 2", image=send_image, bg="#36AFC8", relief=FLAT)
     tab1_button_stop.grid(row=0, column=1)
 
     # load play button image
-    trash_image = ImageTk.PhotoImage(Image.open("trash.png").resize((50, 60)))
+    trash_image = ImageTk.PhotoImage(Image.open("icon/trash.png").resize((50, 60)))
 
     button = Button(tab2_right_frame, text="Delete", image=trash_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
     button.place(relx=0.5, rely=0.85, anchor="center")
@@ -251,7 +251,7 @@ if __name__ == "__main__":
     tab3_label_left.place(relx=0.5, rely=0.2, anchor="center")
 
     # load play button image
-    wifi_image = ImageTk.PhotoImage(Image.open("wifi.png").resize((340, 200)))
+    wifi_image = ImageTk.PhotoImage(Image.open("icon/wifi.png").resize((340, 200)))
 
     button = Button(tab3_left_frame, text="Wifi", image=wifi_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
     button.place(relx=0.5, rely=0.6, anchor="center")
