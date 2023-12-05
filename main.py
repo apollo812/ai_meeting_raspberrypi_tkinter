@@ -78,6 +78,21 @@ def clickRecord():
     start_timer()
     start_recording()
 
+def clickStop():
+    global is_paused, play_image, resume_image
+    if is_paused:
+        tab1_button_stop['image'] = resume_image
+
+        # Genoptag optagelsen
+        resume_timer()
+        toggle_pause()  # Brug toggle_pause for at genoptage
+        is_paused = False
+    else:
+        tab1_button_stop['image'] = play_image
+        # Pause optagelsen
+        pause_timer()
+        toggle_pause()  # Brug toggle_pause for at pause
+        is_paused = True
 
 def start_timer():
     # Start timeren ved at planlægge første opdatering
@@ -96,6 +111,18 @@ def update_timer():
         print(time_string)
         tab1_label["text"] = time_string
         timer_id = root.after(1000, update_timer)  # Planlæg næste opdatering om 1000 ms (1 sekund)
+
+def pause_timer():
+    # Pause timeren ved at stoppe de planlagte opdateringer, men uden at nulstille den akkumulerede tid
+    global timer_running, timer_id
+    timer_running = False
+    if timer_id:
+        root.after_cancel(timer_id)
+
+def resume_timer():
+    global timer_running
+    timer_running = True
+    update_timer()  # Call the function to update the timer
 
 if __name__ == "__main__":
     # create root window
@@ -215,9 +242,11 @@ if __name__ == "__main__":
     tab1_button_record.grid(row=0, column=0, ipadx=25)
 
     # load play button image
+    playstop_image = ImageTk.PhotoImage(Image.open("icon/playstop.png").resize((140, 140)))
     play_image = ImageTk.PhotoImage(Image.open("icon/playbutton.png").resize((140, 140)))
+    resume_image = ImageTk.PhotoImage(Image.open("icon/stopbutton.png").resize((140, 140)))
 
-    tab1_button_stop = Button(tab1_button_frame, text="Button 2", image=play_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
+    tab1_button_stop = Button(tab1_button_frame, text="Button 2", image=playstop_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickStop())
     tab1_button_stop.grid(row=0, column=1, ipadx=25)
 
     tab1_label = Label(tab_frames[1], text="Length 00:00:00", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
@@ -272,8 +301,8 @@ if __name__ == "__main__":
     # load play button image
     send_image = ImageTk.PhotoImage(Image.open("icon/send.png").resize((27, 27)))
 
-    tab1_button_stop = Button(tab2_input_frame, text="Button 2", image=send_image, bg="#36AFC8", relief=FLAT)
-    tab1_button_stop.grid(row=0, column=1)
+    tab2_button_send = Button(tab2_input_frame, text="Button 2", image=send_image, bg="#36AFC8", relief=FLAT)
+    tab2_button_send.grid(row=0, column=1)
 
     # load play button image
     trash_image = ImageTk.PhotoImage(Image.open("icon/trash.png").resize((50, 60)))
