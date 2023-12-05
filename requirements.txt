@@ -1,2 +1,5 @@
 tk
 Pillow
+pyaudio
+openai
+python-docx

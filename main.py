@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
 from tkinter import ttk
+from app import start_recording, stop_recording, toggle_pause
 
 class GradientFrame(Canvas):
     '''A gradient frame which uses a canvas to draw the background'''
@@ -33,6 +34,20 @@ class GradientFrame(Canvas):
             self.create_line(i,0,i,height, tags=("gradient",), fill=color)
         # self.lower("gradient")
 
+#Setting state of meeting
+Pause = False
+is_paused = False
+#Starter en timer som tjekker tiden
+# Opret variabler til timeren
+timer_running = False
+MeetingLength = 0  # Længden på det aktuelle møde i sekunder
+MeetingTotalLength = 0  # Samlet mødelængde i sekunder
+timer_id = None  # Variabel til at holde id for timerhåndteringen
+
+
+MeetingLengthText = ""
+PauseText = "Pause Mødet"
+
 def show_tab(tab_num):
     # Hide all tab frames
     for frame in tab_frames.values():
@@ -59,10 +74,34 @@ def on_focus_out(event):
         entry.insert(0, 'Enter your text here...')
         entry.config(fg = 'grey')
 
+def clickRecord():
+    start_timer()
+    start_recording()
+
+
+def start_timer():
+    # Start timeren ved at planlægge første opdatering
+    global timer_running
+    timer_running = True
+    update_timer()
+
+def update_timer():
+    global MeetingLength, timer_id
+    if timer_running:
+        MeetingLength += 1  # Tæl op med 1 sekund
+        hours = MeetingLength // 3600
+        minutes = (MeetingLength % 3600) // 60
+        seconds = MeetingLength % 60
+        time_string = f"Length {hours:02}:{minutes:02}:{seconds:02}"
+        print(time_string)
+        tab1_label["text"] = time_string
+        timer_id = root.after(1000, update_timer)  # Planlæg næste opdatering om 1000 ms (1 sekund)
+
 if __name__ == "__main__":
     # create root window
     root = Tk()
     root.geometry('586x330')
+    root.title("CrossBox APP")
 
     # Optional: Remove window decorations for a true full-screen experience
     # root.overrideredirect(True)
@@ -172,7 +211,7 @@ if __name__ == "__main__":
     # load record button image
     record_image = ImageTk.PhotoImage(Image.open("icon/record.png").resize((140, 140)))
     
-    tab1_button_record = Button(tab1_button_frame, text="Button 1", image=record_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
+    tab1_button_record = Button(tab1_button_frame, text="Button 1", image=record_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickRecord())
     tab1_button_record.grid(row=0, column=0, ipadx=25)
 
     # load play button image
