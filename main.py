@@ -75,20 +75,33 @@ def on_focus_out(event):
         entry.config(fg = 'grey')
 
 def clickRecord():
-    start_timer()
-    start_recording()
+    global Pause, record_image, stop_image
+    if Pause:
+        tab1_button_recordstop['image'] = record_image
 
-def clickStop():
+        audio_folder = "Audio_Recordings"
+        stop_timer()
+        stop_recording(audio_folder)
+        Pause = False
+    else:
+        tab1_button_recordstop['image'] = stop_image
+        tab1_button_playresume['image'] = resume_image
+
+        start_timer()
+        start_recording()
+        Pause = True
+
+def clickResumePlay():
     global is_paused, play_image, resume_image
     if is_paused:
-        tab1_button_stop['image'] = resume_image
+        tab1_button_playresume['image'] = resume_image
 
         # Genoptag optagelsen
         resume_timer()
         toggle_pause()  # Brug toggle_pause for at genoptage
         is_paused = False
     else:
-        tab1_button_stop['image'] = play_image
+        tab1_button_playresume['image'] = play_image
         # Pause optagelsen
         pause_timer()
         toggle_pause()  # Brug toggle_pause for at pause
@@ -118,6 +131,16 @@ def pause_timer():
     timer_running = False
     if timer_id:
         root.after_cancel(timer_id)
+
+def stop_timer():
+    global timer_running, timer_id, MeetingLength, MeetingTotalLength
+    # Stop timeren ved at annullere den planlagte opdatering
+    timer_running = False
+    if timer_id:
+        root.after_cancel(timer_id)
+    # Gem mødelængden og nulstil MeetingLength
+    MeetingTotalLength += MeetingLength
+    MeetingLength = 0
 
 def resume_timer():
     global timer_running
@@ -237,17 +260,18 @@ if __name__ == "__main__":
 
     # load record button image
     record_image = ImageTk.PhotoImage(Image.open("icon/record.png").resize((140, 140)))
+    stop_image = ImageTk.PhotoImage(Image.open("icon/stop.png").resize((140, 140)))
     
-    tab1_button_record = Button(tab1_button_frame, text="Button 1", image=record_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickRecord())
-    tab1_button_record.grid(row=0, column=0, ipadx=25)
+    tab1_button_recordstop = Button(tab1_button_frame, text="Button 1", image=record_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickRecord())
+    tab1_button_recordstop.grid(row=0, column=0, ipadx=25)
 
     # load play button image
-    playstop_image = ImageTk.PhotoImage(Image.open("icon/playstop.png").resize((140, 140)))
+    playresume_image = ImageTk.PhotoImage(Image.open("icon/playresume.png").resize((140, 140)))
     play_image = ImageTk.PhotoImage(Image.open("icon/playbutton.png").resize((140, 140)))
-    resume_image = ImageTk.PhotoImage(Image.open("icon/stopbutton.png").resize((140, 140)))
+    resume_image = ImageTk.PhotoImage(Image.open("icon/resumebutton.png").resize((140, 140)))
 
-    tab1_button_stop = Button(tab1_button_frame, text="Button 2", image=playstop_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickStop())
-    tab1_button_stop.grid(row=0, column=1, ipadx=25)
+    tab1_button_playresume = Button(tab1_button_frame, text="Button 2", image=playresume_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickResumePlay())
+    tab1_button_playresume.grid(row=0, column=1, ipadx=25)
 
     tab1_label = Label(tab_frames[1], text="Length 00:00:00", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
     tab1_label.place(relx=0.5, rely=0.85, anchor="center")
