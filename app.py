@@ -393,8 +393,32 @@ def get_meeting_list():
         return []  # Return an empty list to signify that no contents were found
 
 
+def delete_meeting_data(folder_name):
+    # Specify the path of the folder you want to delete
+    meeting_path = f'./meetings/{folder_name}'
+    meeting_file_path = f'./meetings/{folder_name}/Part_Full.wav'
+    audio_path = f'./Audio_Recordings/{folder_name}.wav'
 
+    delete_file(audio_path)
+    delete_file(meeting_file_path)
 
+    # Check if the folder exists before attempting to delete it
+    if os.path.exists(meeting_path):
+        try:
+            os.rmdir(meeting_path)
+            print(f"The folder at {meeting_path} has been deleted.")
+        except OSError as e:
+            print(f"Error: {meeting_path} : {e.strerror}")
+    else:
+        print(f"The folder at {meeting_path} does not exist.")
+
+def delete_file(file_path):
+    # Check if the file exists before attempting to remove it
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"The file at {file_path} has been removed.")
+    else:
+        print(f"The file at {file_path} does not exist.")
 
 
 
