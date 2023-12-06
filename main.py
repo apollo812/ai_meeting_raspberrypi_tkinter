@@ -3,7 +3,8 @@ from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
 from tkinter import ttk
-from app import start_recording, stop_recording, toggle_pause, createNewConnection, connect, get_wifi_status, set_content_length
+from app import start_recording, stop_recording, toggle_pause, createNewConnection, connect, get_wifi_status, set_content_length, get_meeting_list
+from datetime import datetime
 
 #Setting state of meeting
 Pause = False
@@ -120,6 +121,13 @@ def on_focus_out(event):
         entry.insert(0, 'Enter your text here...')
         entry.config(fg = 'grey')
 
+def on_item_selected(event):
+    selected_index = tab2_listbox.curselection()
+    if selected_index:
+        selected_item = tab2_listbox.get(selected_index[0])
+        tab2_label_right["text"] = f"Meeting: {convert_time_format(selected_item)}"
+        print(f"Item '{selected_item}' selected")
+
 # Function to be called when a radio button is clicked
 def on_radio_click():
     selected_option = radio_var.get()
@@ -203,6 +211,14 @@ def resume_timer():
     global timer_running
     timer_running = True
     update_timer()  # Call the function to update the timer
+
+def convert_time_format(input_string):
+    # Parse input string into a datetime object
+    dt = datetime.strptime(input_string, "%m-%d-%Y-%H-%M")
+
+    # Format the datetime object into the desired format
+    output_string = dt.strftime("%m-%d-%Y-%H:%M")
+    return output_string
 
 if __name__ == "__main__":
     # create root window
@@ -348,25 +364,30 @@ if __name__ == "__main__":
     tab2_listbox = Listbox(tab2_left_frame, width=25, bg='#2C2C2C', fg='white', relief='flat', highlightthickness=0, height=16)
     tab2_listbox.grid(row=1, column=0, sticky="n")
 
-    # Inserting some items into the listbox
-    items = ["26-11-2023-18:00", "26-11-2023-18:01", "26-11-2023-18:02", "26-11-2023-18:03", "26-11-2023-18:04",
-            "26-11-2023-18:05", "26-11-2023-18:06", "26-11-2023-18:07", "26-11-2023-18:08", "26-11-2023-18:09",
-            "26-11-2023-18:10", "26-11-2023-18:11", "26-11-2023-18:12", "26-11-2023-18:13", "26-11-2023-18:14",
-            "26-11-2023-18:15", "26-11-2023-18:16", "26-11-2023-18:17", "26-11-2023-18:18", "26-11-2023-18:19",
-            "26-11-2023-18:20", "26-11-2023-18:21", "26-11-2023-18:22", "26-11-2023-18:23", "26-11-2023-18:24",
-            "26-11-2023-18:25", "26-11-2023-18:26", "26-11-2023-18:27", "26-11-2023-18:28", "26-11-2023-18:29"
-            ]
+    items = get_meeting_list()
+
+    # # Inserting some items into the listbox
+    # items = ["26-11-2023-18:00", "26-11-2023-18:01", "26-11-2023-18:02", "26-11-2023-18:03", "26-11-2023-18:04",
+    #         "26-11-2023-18:05", "26-11-2023-18:06", "26-11-2023-18:07", "26-11-2023-18:08", "26-11-2023-18:09",
+    #         "26-11-2023-18:10", "26-11-2023-18:11", "26-11-2023-18:12", "26-11-2023-18:13", "26-11-2023-18:14",
+    #         "26-11-2023-18:15", "26-11-2023-18:16", "26-11-2023-18:17", "26-11-2023-18:18", "26-11-2023-18:19",
+    #         "26-11-2023-18:20", "26-11-2023-18:21", "26-11-2023-18:22", "26-11-2023-18:23", "26-11-2023-18:24",
+    #         "26-11-2023-18:25", "26-11-2023-18:26", "26-11-2023-18:27", "26-11-2023-18:28", "26-11-2023-18:29"
+    #         ]
     for item in items:
         tab2_listbox.insert(END, item)
 
     # Apply color scheme to listbox items
     color_listbox_items(tab2_listbox)
 
+    # Bind the click event to the listbox
+    tab2_listbox.bind("<<ListboxSelect>>", on_item_selected)
+
     # Right layout - Label, Entry, and Button
     tab2_right_frame = Frame(tab_frames[2], width=436, height=280, bg="blue")
     tab2_right_frame.grid(row=0, column=1, sticky="n")
     
-    tab2_label_right = Label(tab2_right_frame, text="Meeting: 11-10-2023-11:20", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
+    tab2_label_right = Label(tab2_right_frame, text=f"Meeting: {convert_time_format(items[0]) if len(items) > 0 else 'no data' }", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
     tab2_label_right.place(relx=0.5, rely=0.15, anchor="center")
 
     tab2_input_frame = Frame(tab2_right_frame, bg=sub_frame_3.cget('bg'))

@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+meetings
+Audio_Recordings
+
 # Distribution / packaging
 .Python
 build/

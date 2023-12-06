@@ -382,8 +382,15 @@ def get_wifi_status():
     return result.returncode == 0
 
 
+def get_meeting_list():
+    directory_path = './meetings'
 
-
+    try:
+        directory_contents = os.listdir(directory_path)
+        return directory_contents
+    except FileNotFoundError:
+        print(f"The directory at path '{directory_path}' does not exist or could not be found.")
+        return []  # Return an empty list to signify that no contents were found
 
 
 
