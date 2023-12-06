@@ -55,7 +55,7 @@ def open_connect_wifi_modal():
     input1_label = Label(modal, text="SSID:")
     input1_entry = Entry(modal)
     input2_label = Label(modal, text="Password:")
-    input2_entry = Entry(modal)
+    input2_entry = Entry(modal, show="*")
     ok_button = Button(modal, text="OK", command=lambda: handle_modal_input(input1_entry.get(), input2_entry.get(), modal))
     cancel_button = Button(modal, text="Cancel", command=modal.destroy)
 
