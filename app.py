@@ -102,7 +102,7 @@ def stop_recording(audio_folder):
     output_dir = split_audio(date_dir, mp3_file_path)
     transcribe_audio_files(output_dir, date_dir)
     generate_meeting_report(date_dir)
-    send_email(date_dir)
+    # send_email(date_dir)
     
     return file_path
 
@@ -290,8 +290,8 @@ def save_to_docx(Summary, date_dir):
 
 
 
-def send_email(date_dir):
-    r_email = "kontakt@crosscompany.dk"
+def send_email(date_dir, r_email):
+    # r_email = "kontakt@crosscompany.dk"
     s_email = "crossitlemvig@gmail.com"
     app_password = "wrgndlzevuruadye"
     subject = "Mødereferat: " + date_str

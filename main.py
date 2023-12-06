@@ -3,7 +3,7 @@ from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
 from tkinter import ttk
-from app import start_recording, stop_recording, toggle_pause, createNewConnection, connect, get_wifi_status, set_content_length, get_meeting_list, delete_meeting_data
+from app import start_recording, stop_recording, toggle_pause, createNewConnection, connect, get_wifi_status, set_content_length, get_meeting_list, delete_meeting_data, send_email
 from datetime import datetime
 
 #Setting state of meeting
@@ -151,6 +151,12 @@ def clickDeleteMeeting():
 
     tab2_listbox.delete(currentMeetingIndex)
     tab2_label_right["text"] = f"Meeting: {meetingList[0] if len(meetingList) > 0 else 'no data'}"
+
+def clickSendEmail():
+    global currentMeetingName
+    print(currentMeetingName)
+    email = entryEmail.get()
+    send_email(currentMeetingName, email)
 
 # tab 1
 def clickRecord():
@@ -411,15 +417,15 @@ if __name__ == "__main__":
 
     entryLabelFont = font.Font(family='OpenSans-Bold', weight="bold", size=18)
 
-    entry = Entry(tab2_input_frame, text="here", bg='#47535C', fg='#A1A7AA', font=entryLabelFont, width=25)
-    entry.grid(row=0, column=0)
-    entry.insert(0, 'Send summary to email...')
+    entryEmail = Entry(tab2_input_frame, text="here", bg='#47535C', fg='#A1A7AA', font=entryLabelFont, width=25)
+    entryEmail.grid(row=0, column=0)
+    entryEmail.insert(0, 'Send summary to email...')
 
 
     # load play button image
     send_image = ImageTk.PhotoImage(Image.open("icon/send.png").resize((27, 27)))
 
-    tab2_button_send = Button(tab2_input_frame, text="Button 2", image=send_image, bg="#36AFC8", relief=FLAT)
+    tab2_button_send = Button(tab2_input_frame, text="Button 2", image=send_image, bg="#36AFC8", relief=FLAT, command=clickSendEmail)
     tab2_button_send.grid(row=0, column=1)
 
     # load play button image
