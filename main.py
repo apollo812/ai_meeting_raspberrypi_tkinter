@@ -113,17 +113,6 @@ def color_listbox_items(listbox):
         else:
             listbox.itemconfig(index, {'bg': '#2C2C2C'})
 
-def on_entry_click(event):
-    if entry.get() == 'Enter your text here...':
-        entry.delete(0, "end")
-        entry.insert(0, '')
-        entry.config(fg = 'black')
-
-def on_focus_out(event):
-    if entry.get() == '':
-        entry.insert(0, 'Enter your text here...')
-        entry.config(fg = 'grey')
-
 def on_item_selected(event):
     global currentMeetingName, currentMeetingIndex
     selected_index = tab2_listbox.curselection()
