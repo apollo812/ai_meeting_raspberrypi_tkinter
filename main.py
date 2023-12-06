@@ -3,7 +3,7 @@ from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
 from tkinter import ttk
-from app import start_recording, stop_recording, toggle_pause
+from app import start_recording, stop_recording, toggle_pause, createNewConnection, connect, get_wifi_status
 
 class GradientFrame(Canvas):
     '''A gradient frame which uses a canvas to draw the background'''
@@ -33,6 +33,52 @@ class GradientFrame(Canvas):
             color = "#%4.4x%4.4x%4.4x" % (nr,ng,nb)
             self.create_line(i,0,i,height, tags=("gradient",), fill=color)
         # self.lower("gradient")
+
+# Wifi connect modal
+def open_connect_wifi_modal():
+    modal = Toplevel(root)
+    # Calculate the position to center the modal window
+    parent_x = root.winfo_rootx()
+    parent_y = root.winfo_rooty()
+    parent_width = root.winfo_width()
+    parent_height = root.winfo_height()
+
+    modal_width = 205  # Set modal width
+    modal_height = 100  # Set modal height
+
+    x = parent_x + (parent_width - modal_width) // 2
+    y = parent_y + (parent_height - modal_height) // 2
+    modal.geometry(f"{modal_width}x{modal_height}+{x}+{y}")
+    
+    modal.title("Wifi")
+
+    input1_label = Label(modal, text="SSID:")
+    input1_entry = Entry(modal)
+    input2_label = Label(modal, text="Password:")
+    input2_entry = Entry(modal)
+    ok_button = Button(modal, text="OK", command=lambda: handle_modal_input(input1_entry.get(), input2_entry.get(), modal))
+    cancel_button = Button(modal, text="Cancel", command=modal.destroy)
+
+    input1_label.grid(row=0, column=0, padx=5, pady=5, sticky="e")
+    input1_entry.grid(row=0, column=1, padx=5, pady=5, sticky="w")
+    input2_label.grid(row=1, column=0, padx=5, pady=5, sticky="e")
+    input2_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+    ok_button.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
+    cancel_button.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
+
+def handle_modal_input(name, password, modal):
+    # establish new connection
+    createNewConnection(name, name, password)
+    # connect to the wifi network
+    connect(name, name)
+    wifi_status = get_wifi_status()
+
+    global wifi_image, nowifi_image
+    if wifi_status:
+        tab3_button_wifi['image'] = wifi_image
+        modal.destroy()
+    else:
+        tab3_button_wifi['image'] = nowifi_image
 
 #Setting state of meeting
 Pause = False
@@ -342,11 +388,17 @@ if __name__ == "__main__":
     tab3_label_left = Label(tab3_left_frame, text="Connect to WIFI", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
     tab3_label_left.place(relx=0.5, rely=0.2, anchor="center")
 
-    # load play button image
+    # wifi button
+    wifi_status = get_wifi_status()
     wifi_image = ImageTk.PhotoImage(Image.open("icon/wifi.png").resize((340, 200)))
+    nowifi_image = ImageTk.PhotoImage(Image.open("icon/nowifi.png").resize((340, 200)))
 
-    button = Button(tab3_left_frame, text="Wifi", image=wifi_image, bg=sub_frame_3.cget('bg'), relief=FLAT)
-    button.place(relx=0.5, rely=0.6, anchor="center")
+    if wifi_status:
+        wifi_image_case = wifi_image
+    else:
+        wifi_image_case = nowifi_image
+    tab3_button_wifi = Button(tab3_left_frame, text="Wifi", image=wifi_image_case, bg=sub_frame_3.cget('bg'), relief=FLAT, command=open_connect_wifi_modal)
+    tab3_button_wifi.place(relx=0.5, rely=0.6, anchor="center")
 
     # Right layout
     tab3_summery_font = font.Font(family='OpenSans-Bold', weight="bold", size=15)
