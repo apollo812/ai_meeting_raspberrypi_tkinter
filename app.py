@@ -22,12 +22,18 @@ import platform
 meetings_folder = "meetings"
 
 # Global variabler
-global stream, frames, audio, recording, is_paused
+global stream, frames, audio, recording, is_paused, content_length
 stream = None
 frames = []
 audio = None
 recording = False
 is_paused = False  # Ny kontrolvariabel til pauser
+
+
+def set_content_length(data):
+    global content_length
+    content_length = data
+    print(content_length)
 
 def record_loop():
     global stream, frames, recording, is_paused
@@ -244,10 +250,19 @@ def generate_meeting_report(date_dir):
 
 
     # Now, command GPT-4 to provide a headline
+    global content_length
+
+    if content_length == "Short":
+        word_length = 250
+    elif content_length == "Medium":
+        word_length = 500
+    elif content_length == "Long":
+        word_length = 750
+
     messages.append(
         {
                 "role": "system",
-                "content": "You are a proficient AI with a specialty in distilling information into key points. Based on the following text, identify and list the main points that were discussed or brought up. These should be the most important ideas, findings, or topics that are crucial to the essence of the discussion. Your goal is to provide a usefull information that someone could read to quickly understand what was talked about. Is important that you at all time use the same langauge as transcripted. I need you to first of all make a headline thats is fitting for the meeting. Then i want you to make a very short summart in bullet point format. Then i want you to write a more detailed summary about the whole meeting where you focus on including key points and you are very good at gathering conclusions, dates and numbers I want you to make it easy to read with good spaces and headlines in the summary. This response should max be 1000 words long. Its very important that you check what language the transcript is in and use the same language in your summary. The most common languange is Danish and english."
+                "content": f"You are a proficient AI with a specialty in distilling information into key points. Based on the following text, identify and list the main points that were discussed or brought up. These should be the most important ideas, findings, or topics that are crucial to the essence of the discussion. Your goal is to provide a usefull information that someone could read to quickly understand what was talked about. Is important that you at all time use the same langauge as transcripted. I need you to first of all make a headline thats is fitting for the meeting. Then i want you to make a very short summart in bullet point format. Then i want you to write a more detailed summary about the whole meeting where you focus on including key points and you are very good at gathering conclusions, dates and numbers I want you to make it easy to read with good spaces and headlines in the summary. This response should max be {word_length} words long. Its very important that you check what language the transcript is in and use the same language in your summary. The most common languange is Danish and english."
             }
     
     )

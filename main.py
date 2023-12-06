@@ -3,7 +3,21 @@ from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
 from tkinter import ttk
-from app import start_recording, stop_recording, toggle_pause, createNewConnection, connect, get_wifi_status
+from app import start_recording, stop_recording, toggle_pause, createNewConnection, connect, get_wifi_status, set_content_length
+
+#Setting state of meeting
+Pause = False
+is_paused = False
+#Starter en timer som tjekker tiden
+# Opret variabler til timeren
+timer_running = False
+MeetingLength = 0  # Længden på det aktuelle møde i sekunder
+MeetingTotalLength = 0  # Samlet mødelængde i sekunder
+timer_id = None  # Variabel til at holde id for timerhåndteringen
+contentLength = "Short"
+
+MeetingLengthText = ""
+PauseText = "Pause Mødet"
 
 class GradientFrame(Canvas):
     '''A gradient frame which uses a canvas to draw the background'''
@@ -80,20 +94,6 @@ def handle_modal_input(name, password, modal):
     else:
         tab3_button_wifi['image'] = nowifi_image
 
-#Setting state of meeting
-Pause = False
-is_paused = False
-#Starter en timer som tjekker tiden
-# Opret variabler til timeren
-timer_running = False
-MeetingLength = 0  # Længden på det aktuelle møde i sekunder
-MeetingTotalLength = 0  # Samlet mødelængde i sekunder
-timer_id = None  # Variabel til at holde id for timerhåndteringen
-
-
-MeetingLengthText = ""
-PauseText = "Pause Mødet"
-
 def show_tab(tab_num):
     # Hide all tab frames
     for frame in tab_frames.values():
@@ -120,6 +120,17 @@ def on_focus_out(event):
         entry.insert(0, 'Enter your text here...')
         entry.config(fg = 'grey')
 
+# Function to be called when a radio button is clicked
+def on_radio_click():
+    selected_option = radio_var.get()
+    if selected_option == 1:
+        set_content_length("Short")
+    elif selected_option == 2:
+        set_content_length("Medium")
+    elif selected_option == 3:
+        set_content_length("Long")
+
+# tab 1
 def clickRecord():
     global Pause, record_image, stop_image
     if Pause:
@@ -415,11 +426,11 @@ if __name__ == "__main__":
 
     radio_var = IntVar()
     radio_var.set(1)
-    radio1_tab3 = ttk.Radiobutton(tab3_right_frame, text="Short", variable=radio_var, value=1, width=15, style='my.TRadiobutton')
+    radio1_tab3 = ttk.Radiobutton(tab3_right_frame, text="Short", variable=radio_var, value=1, width=15, style='my.TRadiobutton', command=on_radio_click)
     radio1_tab3.place(relx=0.5, rely=0.4, anchor="center")
-    radio2_tab3 = ttk.Radiobutton(tab3_right_frame, text="Medium", variable=radio_var, value=2, width=15, style='my.TRadiobutton')
+    radio2_tab3 = ttk.Radiobutton(tab3_right_frame, text="Medium", variable=radio_var, value=2, width=15, style='my.TRadiobutton', command=on_radio_click)
     radio2_tab3.place(relx=0.5, rely=0.6, anchor="center")
-    radio3_tab3 = ttk.Radiobutton(tab3_right_frame, text="Long", variable=radio_var, value=3, width=15, style='my.TRadiobutton')
+    radio3_tab3 = ttk.Radiobutton(tab3_right_frame, text="Long", variable=radio_var, value=3, width=15, style='my.TRadiobutton', command=on_radio_click)
     radio3_tab3.place(relx=0.5, rely=0.8, anchor="center")
 
     # Show the first tab group contents on startup
