@@ -165,7 +165,7 @@ def split_audio(date_dir, mp3_file_path):
 
 
 def transcribe_audio_files(output_dir, date_dir):
-    client = OpenAI(api_key="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")
+    client = OpenAI(api_key="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")
     
     text_output = []  # List to store transcriptions
     audio_files = [f for f in os.listdir(output_dir)]
@@ -217,7 +217,7 @@ def split_transcript_into_parts(date_dir):
 
 def generate_meeting_report(date_dir):
 
-    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key="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",)
+    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key="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",)
    
 
 
