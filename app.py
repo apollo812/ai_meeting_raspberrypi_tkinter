@@ -74,6 +74,12 @@ def start_recording():
     recording_thread.start()
 
 def stop_recording(audio_folder):
+    if not os.path.exists(audio_folder):
+        os.makedirs(audio_folder)
+        print(f"{audio_folder} has been created.")
+    else:
+        print(f"{audio_folder} already exists.")
+
     global stream, frames, audio, recording, file_path, date_str
     print("Stopper nu")
 

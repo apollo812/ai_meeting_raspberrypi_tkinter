@@ -20,9 +20,6 @@ currentMeetingName = ""
 currentMeetingIndex = 0
 meetingList = []
 
-MeetingLengthText = ""
-PauseText = "Pause Mødet"
-
 class GradientFrame(Canvas):
     '''A gradient frame which uses a canvas to draw the background'''
     def __init__(self, parent, color1="red", color2="black", **kwargs):
