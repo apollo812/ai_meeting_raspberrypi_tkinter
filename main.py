@@ -100,12 +100,15 @@ def handle_modal_input(name, password, modal):
 
 def show_tab(tab_num):
     # Hide all tab frames
-    global meetingList
+    global meetingList, currentMeetingName
     meetingList = get_meeting_list()
 
     tab2_listbox.delete(0, END)
     for item in meetingList:
         tab2_listbox.insert(END, item)
+
+    currentMeetingName = meetingList[0] if len(meetingList) > 0 else "no data"
+    tab2_label_right["text"] = f"Meeting: {currentMeetingName}"
 
     for frame in tab_frames.values():
         frame.grid_forget()
@@ -388,8 +391,6 @@ if __name__ == "__main__":
     #         "26-11-2023-18:20", "26-11-2023-18:21", "26-11-2023-18:22", "26-11-2023-18:23", "26-11-2023-18:24",
     #         "26-11-2023-18:25", "26-11-2023-18:26", "26-11-2023-18:27", "26-11-2023-18:28", "26-11-2023-18:29"
     #         ]
-
-    currentMeetingName = meetingList[0] if len(meetingList) > 0 else "no data"
 
     # Apply color scheme to listbox items
     color_listbox_items(tab2_listbox)

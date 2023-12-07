@@ -299,10 +299,11 @@ def save_to_docx(Summary, date_dir):
 
 
 def send_email(date_dir, r_email):
+    print("mail", date_dir)
     # r_email = "kontakt@crosscompany.dk"
     s_email = "crossitlemvig@gmail.com"
     app_password = "wrgndlzevuruadye"
-    subject = "Mødereferat: " + date_str
+    subject = "Mødereferat: " + date_dir
     message = "Her er mødereferatet fra mødet der lige har været afholdt"
 
     # Set up MIME
@@ -314,7 +315,7 @@ def send_email(date_dir, r_email):
     
     # Attach the file
     docx_filename = "meeting_summary.docx"
-    docx_filepath = os.path.join(date_dir, docx_filename)
+    docx_filepath = os.path.join(f'./meetings/{date_dir}', docx_filename)
     print(docx_filepath)
     with open(docx_filepath, "rb") as attachment:
         part = MIMEBase('application', 'octet-stream')
