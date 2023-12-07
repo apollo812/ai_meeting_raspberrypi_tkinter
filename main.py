@@ -141,12 +141,14 @@ def on_radio_click():
         set_content_length("Long")
 
 def clickDeleteMeeting():
-    global meetingList, currentMeetingIndex
+    global meetingList, currentMeetingIndex, currentMeetingName
     delete_meeting_data(currentMeetingName)
     meetingList = get_meeting_list()
 
+    currentMeetingName = meetingList[0] if len(meetingList) > 0 else 'no data'
     tab2_listbox.delete(currentMeetingIndex)
-    tab2_label_right["text"] = f"Meeting: {meetingList[0] if len(meetingList) > 0 else 'no data'}"
+    tab2_label_right["text"] = f"Meeting: {currentMeetingName}"
+    currentMeetingIndex = 0
 
 def clickSendEmail():
     global currentMeetingName
