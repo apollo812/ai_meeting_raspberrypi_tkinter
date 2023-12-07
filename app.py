@@ -165,7 +165,7 @@ def split_audio(date_dir, mp3_file_path):
 
 
 def transcribe_audio_files(output_dir, date_dir):
-    client = OpenAI(api_key="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")
+    client = OpenAI(api_key="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")
     
     text_output = []  # List to store transcriptions
     audio_files = [f for f in os.listdir(output_dir)]
@@ -185,7 +185,7 @@ def transcribe_audio_files(output_dir, date_dir):
         text_output.append(transcript_text)
 
     # Save the combined transcriptions to a file
-    with open(os.path.join(date_dir, 'transcription.txt'), 'w') as f:
+    with open(os.path.join(date_dir, 'transcription.txt'), 'w', encoding='utf-8') as f:
         f.write("\n".join(text_output))
 
     print("Transcription completed!")
@@ -216,8 +216,9 @@ def split_transcript_into_parts(date_dir):
 
 
 def generate_meeting_report(date_dir):
-
-    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key="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",)
+    client = OpenAI(api_key="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")
+    
+    # client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key="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",)
    
 
 
@@ -241,12 +242,12 @@ def generate_meeting_report(date_dir):
         })
 
         # Initialize conversation with GPT-4
-    response = client.chat.completions.create(model="openai/gpt-4-32k", # Optional (user controls the default)
-    messages=messages,
-    extra_headers={
-    "HTTP-Referer": "http://localhost:3000", # To identify your app. Can be set to e.g. http://localhost:3000 for testing
-    "X-Title": "AI_Meeting", # Optional. Shows on openrouter.ai
-     })
+    # response = client.chat.completions.create(model="openai/gpt-4-32k", # Optional (user controls the default)
+    # messages=messages,
+    # extra_headers={
+    # "HTTP-Referer": "http://localhost:3000", # To identify your app. Can be set to e.g. http://localhost:3000 for testing
+    # "X-Title": "AI_Meeting", # Optional. Shows on openrouter.ai
+    #  })
 
 
     # Now, command GPT-4 to provide a headline
@@ -261,17 +262,24 @@ def generate_meeting_report(date_dir):
 
     messages.append(
         {
-                "role": "system",
-                "content": f"You are a proficient AI with a specialty in distilling information into key points. Based on the following text, identify and list the main points that were discussed or brought up. These should be the most important ideas, findings, or topics that are crucial to the essence of the discussion. Your goal is to provide a usefull information that someone could read to quickly understand what was talked about. Is important that you at all time use the same langauge as transcripted. I need you to first of all make a headline thats is fitting for the meeting. Then i want you to make a very short summart in bullet point format. Then i want you to write a more detailed summary about the whole meeting where you focus on including key points and you are very good at gathering conclusions, dates and numbers I want you to make it easy to read with good spaces and headlines in the summary. This response should max be {word_length} words long. Its very important that you check what language the transcript is in and use the same language in your summary. The most common languange is Danish and english."
-            }
+            "role": "system",
+            "content": f"You are a proficient AI with a specialty in distilling information into key points. Based on the following text, identify and list the main points that were discussed or brought up. These should be the most important ideas, findings, or topics that are crucial to the essence of the discussion. Your goal is to provide a usefull information that someone could read to quickly understand what was talked about. Is important that you at all time use the same langauge as transcripted. I need you to first of all make a headline thats is fitting for the meeting. Then i want you to make a very short summart in bullet point format. Then i want you to write a more detailed summary about the whole meeting where you focus on including key points and you are very good at gathering conclusions, dates and numbers I want you to make it easy to read with good spaces and headlines in the summary. This response should max be {word_length} words long. Its very important that you check what language the transcript is in and use the same language in your summary. The most common languange is Danish and english."
+        }
     
     )
 
-    response = client.chat.completions.create(model="openai/gpt-4-32k", messages=messages, extra_headers={
-    "HTTP-Referer": "http://localhost:3000", # To identify your app. Can be set to e.g. http://localhost:3000 for testing
-    "X-Title": "AI_Meeting", # Optional. Shows on openrouter.ai
-     })
-    Summary = response.choices[0].message.content
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=messages
+    )
+
+    
+
+    # response = client.chat.completions.create(model="openai/gpt-4-32k", messages=messages, extra_headers={
+    #     "HTTP-Referer": "http://localhost:3000", # To identify your app. Can be set to e.g. http://localhost:3000 for testing
+    #     "X-Title": "AI_Meeting", # Optional. Shows on openrouter.ai
+    #  })
+    Summary = completion.choices[0].message.content
     print("Done with summery. Saving to Docx file")
 
     save_to_docx(Summary, date_dir)

@@ -100,6 +100,13 @@ def handle_modal_input(name, password, modal):
 
 def show_tab(tab_num):
     # Hide all tab frames
+    global meetingList
+    meetingList = get_meeting_list()
+
+    tab2_listbox.delete(0, END)
+    for item in meetingList:
+        tab2_listbox.insert(END, item)
+
     for frame in tab_frames.values():
         frame.grid_forget()
     
@@ -373,8 +380,6 @@ if __name__ == "__main__":
     tab2_listbox = Listbox(tab2_left_frame, width=25, bg='#2C2C2C', fg='white', relief='flat', highlightthickness=0, height=16)
     tab2_listbox.grid(row=1, column=0, sticky="n")
 
-    meetingList = get_meeting_list()
-
     # # Inserting some items into the listbox
     # items = ["26-11-2023-18:00", "26-11-2023-18:01", "26-11-2023-18:02", "26-11-2023-18:03", "26-11-2023-18:04",
     #         "26-11-2023-18:05", "26-11-2023-18:06", "26-11-2023-18:07", "26-11-2023-18:08", "26-11-2023-18:09",
@@ -383,8 +388,6 @@ if __name__ == "__main__":
     #         "26-11-2023-18:20", "26-11-2023-18:21", "26-11-2023-18:22", "26-11-2023-18:23", "26-11-2023-18:24",
     #         "26-11-2023-18:25", "26-11-2023-18:26", "26-11-2023-18:27", "26-11-2023-18:28", "26-11-2023-18:29"
     #         ]
-    for item in meetingList:
-        tab2_listbox.insert(END, item)
 
     currentMeetingName = meetingList[0] if len(meetingList) > 0 else "no data"
 
@@ -458,6 +461,7 @@ if __name__ == "__main__":
 
     radio_var = IntVar()
     radio_var.set(1)
+    set_content_length("Short")
     radio1_tab3 = ttk.Radiobutton(tab3_right_frame, text="Short", variable=radio_var, value=1, width=15, style='my.TRadiobutton', command=on_radio_click)
     radio1_tab3.place(relx=0.5, rely=0.4, anchor="center")
     radio2_tab3 = ttk.Radiobutton(tab3_right_frame, text="Medium", variable=radio_var, value=2, width=15, style='my.TRadiobutton', command=on_radio_click)
