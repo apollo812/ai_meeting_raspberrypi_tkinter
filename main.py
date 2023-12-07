@@ -158,10 +158,12 @@ def clickSendEmail():
 
 # tab 1
 def clickRecord():
-    global Pause, record_image, stop_image
+    global Pause, record_image, stop_image, play_image
     if Pause:
         tab1_button_recordstop['image'] = record_image
-
+        tab1_button_playresume['image'] = play_image
+        tab1_label['text'] = "Length 00:00:00"
+        
         audio_folder = "Audio_Recordings"
         stop_timer()
         stop_recording(audio_folder)

@@ -206,7 +206,7 @@ def transcribe_audio_files(output_dir, date_dir):
 
 
 def split_transcript_into_parts(date_dir):
-    with open(os.path.join(date_dir, "transcription.txt"), "r") as file:
+    with open(os.path.join(date_dir, "transcription.txt"), "r", encoding="utf-8") as file:
         transcript_text = file.read()
 
     total_length = len(transcript_text)
