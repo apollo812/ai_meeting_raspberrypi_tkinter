@@ -3,3 +3,4 @@ Pillow
 pyaudio
 openai
 python-docx
+python-dotenv

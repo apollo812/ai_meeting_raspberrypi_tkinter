@@ -13,11 +13,12 @@ from email.mime.base import MIMEBase
 from email import encoders
 import threading
 import platform
+from dotenv import load_dotenv
 
 
-
-
-
+# Load environment variables from .env
+load_dotenv()
+openai_api_key = os.environ['OpenAI_API_KEY']
 
 meetings_folder = "meetings"
 
@@ -171,7 +172,7 @@ def split_audio(date_dir, mp3_file_path):
 
 
 def transcribe_audio_files(output_dir, date_dir):
-    client = OpenAI(api_key="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")
+    client = OpenAI(api_key=openai_api_key)
     
     text_output = []  # List to store transcriptions
     audio_files = [f for f in os.listdir(output_dir)]
@@ -222,7 +223,7 @@ def split_transcript_into_parts(date_dir):
 
 
 def generate_meeting_report(date_dir):
-    client = OpenAI(api_key="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")
+    client = OpenAI(api_key=openai_api_key)
     
     # client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key="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",)
    
