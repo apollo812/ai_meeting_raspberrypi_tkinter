@@ -403,22 +403,36 @@ def get_meeting_list():
 
 def delete_meeting_data(folder_name):
     # Specify the path of the folder you want to delete
-    meeting_path = f'./meetings/{folder_name}'
-    meeting_file_path = f'./meetings/{folder_name}/Part_Full.wav'
     audio_path = f'./Audio_Recordings/{folder_name}.wav'
-
     delete_file(audio_path)
-    delete_file(meeting_file_path)
 
+    meeting_path = f'./meetings/{folder_name}'
+    meeting_audio_path = f'./meetings/{folder_name}/audio_files'
+
+    meeting_audio_file_list = os.listdir(meeting_audio_path)
+    for file_name in meeting_audio_file_list:
+        delete_file(f'./meetings/{folder_name}/audio_files/{file_name}')
+
+    delete_folder(meeting_audio_path)
+
+    meeting_file_list = os.listdir(meeting_path)
+
+    for file_name in meeting_file_list:
+        delete_file(f'./meetings/{folder_name}/{file_name}')
+
+    delete_folder(meeting_path)
+    
+
+def delete_folder(folder_path):
     # Check if the folder exists before attempting to delete it
-    if os.path.exists(meeting_path):
+    if os.path.exists(folder_path):
         try:
-            os.rmdir(meeting_path)
-            print(f"The folder at {meeting_path} has been deleted.")
+            os.rmdir(folder_path)
+            print(f"The folder at {folder_path} has been deleted.")
         except OSError as e:
-            print(f"Error: {meeting_path} : {e.strerror}")
+            print(f"Error: {folder_path} : {e.strerror}")
     else:
-        print(f"The folder at {meeting_path} does not exist.")
+        print(f"The folder at {folder_path} does not exist.")
 
 def delete_file(file_path):
     # Check if the file exists before attempting to remove it
