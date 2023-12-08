@@ -38,6 +38,7 @@ def set_content_length(data):
 
 def record_loop():
     global stream, frames, recording, is_paused
+    count = 0
     print("Optager LOOP")
     while recording:
         if not is_paused:
@@ -45,8 +46,7 @@ def record_loop():
                 data = stream.read(1024, exception_on_overflow=False)
                 frames.append(data)
             except OSError as e:
-                print(f"Fejl ved lydoptagelse: {e}")
-                # Håndter fejlen her (fx log, genstart strøm osv.)
+                count += 1
 
 def toggle_pause():
     global is_paused, stream
@@ -93,7 +93,7 @@ def stop_recording(audio_folder):
     audio.terminate()
 
     # Behandler og gemmer den optagede lydfil
-    date_str = datetime.datetime.now().strftime('%d-%m-%Y-%H-%M')
+    date_str = datetime.datetime.now().strftime('%d-%m-%Y-%H-%M-%S')
     file_path = os.path.join(audio_folder, date_str + ".wav")
 
     with wave.open(file_path, "wb") as audio_file:
@@ -117,7 +117,7 @@ def stop_recording(audio_folder):
 
 
 def date_dir_create(meetings_folder):
-    date_str = datetime.datetime.now().strftime('%d-%m-%Y-%H-%M')
+    date_str = datetime.datetime.now().strftime('%d-%m-%Y-%H-%M-%S')
     #Making a date folder and copying the audio file into the folder
     date_dir = os.path.join(meetings_folder, date_str)
     os.makedirs(date_dir, exist_ok=True)

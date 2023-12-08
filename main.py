@@ -105,7 +105,7 @@ def show_tab(tab_num):
         tab2_listbox.insert(END, item)
 
     currentMeetingName = meetingList[0] if len(meetingList) > 0 else "no data"
-    tab2_label_right["text"] = f"Meeting: {currentMeetingName}"
+    tab2_label_right["text"] = f"Meeting: {convert_time_format(currentMeetingName)}"
 
     for frame in tab_frames.values():
         frame.grid_forget()
@@ -147,7 +147,7 @@ def clickDeleteMeeting():
 
     currentMeetingName = meetingList[0] if len(meetingList) > 0 else 'no data'
     tab2_listbox.delete(currentMeetingIndex)
-    tab2_label_right["text"] = f"Meeting: {currentMeetingName}"
+    tab2_label_right["text"] = f"Meeting: {convert_time_format(currentMeetingName)}"
     currentMeetingIndex = 0
 
 def clickSendEmail():
@@ -233,12 +233,18 @@ def resume_timer():
     update_timer()  # Call the function to update the timer
 
 def convert_time_format(input_string):
-    # Parse input string into a datetime object
-    dt = datetime.strptime(input_string, "%m-%d-%Y-%H-%M")
+    if len(input_string.split('-')) == 6:
+        try:
+            # Parse input string into a datetime object
+            dt = datetime.strptime(input_string, "%m-%d-%Y-%H-%M-%S")
 
-    # Format the datetime object into the desired format
-    output_string = dt.strftime("%m-%d-%Y-%H:%M")
-    return output_string
+            # Format the datetime object into the desired format
+            output_string = dt.strftime("%m-%d-%Y-%H:%M:%S")
+            return output_string
+        except ValueError:
+            return input_string
+    else:
+        return input_string
 
 if __name__ == "__main__":
     # create root window
@@ -403,7 +409,7 @@ if __name__ == "__main__":
     tab2_right_frame = Frame(tab_frames[2], width=436, height=280, bg="blue")
     tab2_right_frame.grid(row=0, column=1, sticky="n")
     
-    tab2_label_right = Label(tab2_right_frame, text=f"Meeting: {currentMeetingName}", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
+    tab2_label_right = Label(tab2_right_frame, text=f"Meeting: {convert_time_format(currentMeetingName)}", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
     tab2_label_right.place(relx=0.5, rely=0.15, anchor="center")
 
     tab2_input_frame = Frame(tab2_right_frame, bg=sub_frame_3.cget('bg'))
