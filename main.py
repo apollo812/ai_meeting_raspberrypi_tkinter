@@ -249,7 +249,7 @@ def convert_time_format(input_string):
 if __name__ == "__main__":
     # create root window
     root = Tk()
-    root.geometry('586x330')
+    root.geometry('800x480')
     root.title("CrossBox APP")
 
     # Optional: Remove window decorations for a true full-screen experience
@@ -261,7 +261,7 @@ if __name__ == "__main__":
     main_frame.grid(row=0, column=0)
 
     # Sub frame 1
-    sub_frame_1 = Frame(main_frame, width=586, height=50, bg='#2C2C2C')  # Assuming height 50 to mimic h-15
+    sub_frame_1 = Frame(main_frame, width=800, height=50, bg='#2C2C2C') 
     sub_frame_1.grid(row=0, column=0)
 
     # Sub frame 2
@@ -295,7 +295,7 @@ if __name__ == "__main__":
         fg="white", 
         compound="center", 
         image=null_image, 
-        width=137, 
+        width=212, 
         height=42, 
         bg=col_frame_2.cget('bg'), 
         relief=FLAT,
@@ -311,7 +311,7 @@ if __name__ == "__main__":
         fg="white", 
         compound="center", 
         image=null_image, 
-        width=137, 
+        width=212, 
         height=42, 
         bg=col_frame_2.cget('bg'), 
         relief=FLAT,
@@ -327,7 +327,7 @@ if __name__ == "__main__":
         fg="white", 
         compound="center", 
         image=null_image, 
-        width=138, 
+        width=212, 
         height=42, 
         bg=col_frame_2.cget('bg'), 
         relief=FLAT,
@@ -336,13 +336,13 @@ if __name__ == "__main__":
     button_settings.grid(row=0, column=2)
     
     # Sub frame 3
-    sub_frame_3 = Frame(main_frame, width=586, height=280, bg='blue')  
+    sub_frame_3 = Frame(main_frame, width=800, height=430, bg='blue')  
     sub_frame_3.grid(row=1, column=0, sticky="nsew")
 
     # Create tab frames
     tab_frames = {}
     for i in range(1, 4):
-        tab_frames[i] = Frame(sub_frame_3, width=586, height=280, bg='blue')
+        tab_frames[i] = Frame(sub_frame_3, width=800, height=430, bg='blue')
 
     # Define the content for each tab frame
 
@@ -358,16 +358,16 @@ if __name__ == "__main__":
     tab1_button_frame.place(relx=0.5, rely=0.5, anchor="center")
 
     # load record button image
-    record_image = ImageTk.PhotoImage(Image.open("icon/record.png").resize((140, 140)))
-    stop_image = ImageTk.PhotoImage(Image.open("icon/stop.png").resize((140, 140)))
+    record_image = ImageTk.PhotoImage(Image.open("icon/record.png").resize((180, 180)))
+    stop_image = ImageTk.PhotoImage(Image.open("icon/stop.png").resize((180, 180)))
     
     tab1_button_recordstop = Button(tab1_button_frame, text="Button 1", image=record_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickRecord())
     tab1_button_recordstop.grid(row=0, column=0, ipadx=25)
 
     # load play button image
-    playresume_image = ImageTk.PhotoImage(Image.open("icon/playresume.png").resize((140, 140)))
-    play_image = ImageTk.PhotoImage(Image.open("icon/playbutton.png").resize((140, 140)))
-    resume_image = ImageTk.PhotoImage(Image.open("icon/resumebutton.png").resize((140, 140)))
+    playresume_image = ImageTk.PhotoImage(Image.open("icon/playresume.png").resize((180, 180)))
+    play_image = ImageTk.PhotoImage(Image.open("icon/playbutton.png").resize((180, 180)))
+    resume_image = ImageTk.PhotoImage(Image.open("icon/resumebutton.png").resize((180, 180)))
 
     tab1_button_playresume = Button(tab1_button_frame, text="Button 2", image=playresume_image, bg=sub_frame_3.cget('bg'), relief=FLAT, command=lambda: clickResumePlay())
     tab1_button_playresume.grid(row=0, column=1, ipadx=25)
@@ -381,13 +381,13 @@ if __name__ == "__main__":
     # Left layout - Label and Listbox
     listLabelFont = font.Font(family='OpenSans-Bold', weight="bold", size=12)
 
-    tab2_left_frame = Frame(tab_frames[2], width=152, height=280)
+    tab2_left_frame = Frame(tab_frames[2], width=152, height=430)
     tab2_left_frame.grid(row=0, column=0, sticky="n")
 
     tab2_label_left = Label(tab2_left_frame, text="Meetings", font=listLabelFont, bg='#252525', fg='white')
     tab2_label_left.grid(row=0, column=0, sticky="nswe")
 
-    tab2_listbox = Listbox(tab2_left_frame, width=25, bg='#2C2C2C', fg='white', relief='flat', highlightthickness=0, height=16)
+    tab2_listbox = Listbox(tab2_left_frame, width=25, bg='#2C2C2C', fg='white', relief='flat', highlightthickness=0, height=26)
     tab2_listbox.grid(row=1, column=0, sticky="n")
 
     # # Inserting some items into the listbox
@@ -406,7 +406,7 @@ if __name__ == "__main__":
     tab2_listbox.bind("<<ListboxSelect>>", on_item_selected)
 
     # Right layout - Label, Entry, and Button
-    tab2_right_frame = Frame(tab_frames[2], width=436, height=280, bg="blue")
+    tab2_right_frame = Frame(tab_frames[2], width=650, height=430, bg="blue")
     tab2_right_frame.grid(row=0, column=1, sticky="n")
     
     tab2_label_right = Label(tab2_right_frame, text=f"Meeting: {convert_time_format(currentMeetingName)}", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
@@ -415,15 +415,15 @@ if __name__ == "__main__":
     tab2_input_frame = Frame(tab2_right_frame, bg=sub_frame_3.cget('bg'))
     tab2_input_frame.place(relx=0.5, rely=0.45, anchor="center")
 
-    entryLabelFont = font.Font(family='OpenSans-Bold', weight="bold", size=18)
+    entryLabelFont = font.Font(family='OpenSans-Bold', weight="bold", size=24)
 
-    entryEmail = Entry(tab2_input_frame, text="here", bg='#47535C', fg='#A1A7AA', font=entryLabelFont, width=25)
+    entryEmail = Entry(tab2_input_frame, text="here", bg='#47535C', fg='#A1A7AA', font=entryLabelFont, width=26)
     entryEmail.grid(row=0, column=0)
     entryEmail.insert(0, 'Send summary to email...')
 
 
     # load play button image
-    send_image = ImageTk.PhotoImage(Image.open("icon/send.png").resize((27, 27)))
+    send_image = ImageTk.PhotoImage(Image.open("icon/send.png").resize((35, 35)))
 
     tab2_button_send = Button(tab2_input_frame, text="Button 2", image=send_image, bg="#36AFC8", relief=FLAT, command=clickSendEmail)
     tab2_button_send.grid(row=0, column=1)
@@ -436,7 +436,7 @@ if __name__ == "__main__":
 
 
     # Third Tab
-    tab3_left_frame = Frame(tab_frames[3], width=293, height=280, bg='blue')
+    tab3_left_frame = Frame(tab_frames[3], width=320, height=430, bg='blue')
     tab3_left_frame.grid(row=0, column=0, sticky="n")
 
     tab3_label_left = Label(tab3_left_frame, text="Connect to WIFI", fg="white", font=tab1_length_font, bg=sub_frame_3.cget('bg'))
@@ -444,8 +444,8 @@ if __name__ == "__main__":
 
     # wifi button
     wifi_status = get_wifi_status()
-    wifi_image = ImageTk.PhotoImage(Image.open("icon/wifi.png").resize((340, 200)))
-    nowifi_image = ImageTk.PhotoImage(Image.open("icon/nowifi.png").resize((340, 200)))
+    wifi_image = ImageTk.PhotoImage(Image.open("icon/wifi.png").resize((400, 240)))
+    nowifi_image = ImageTk.PhotoImage(Image.open("icon/nowifi.png").resize((400, 240)))
 
     if wifi_status:
         wifi_image_case = wifi_image
@@ -458,7 +458,7 @@ if __name__ == "__main__":
     tab3_summery_font = font.Font(family='OpenSans-Bold', weight="bold", size=15)
     tab3_radio_font = font.Font(family='OpenSans-Bold', weight="bold", size=13)
 
-    tab3_right_frame = Frame(tab_frames[3], width=293, height=280, bg='blue')
+    tab3_right_frame = Frame(tab_frames[3], width=480, height=430, bg='blue')
     tab3_right_frame.grid(row=0, column=1, sticky="n")
 
     tab3_label_right = Label(tab3_right_frame, text="Length of summery", fg="white", font=tab3_summery_font, bg=sub_frame_3.cget('bg'))
